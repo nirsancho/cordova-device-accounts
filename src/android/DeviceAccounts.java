@@ -1,4 +1,4 @@
-package org.loicknuchel.cordova.deviceaccounts;
+package org.nirsancho.cordova.deviceaccounts;
 
 import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.CallbackContext;

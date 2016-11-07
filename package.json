@@ -1,0 +1,25 @@
+{
+  "name": "DeviceAccounts",
+  "version": "1.0.0",
+  "cordova": {
+    "id": "org.nirsancho.cordova.deviceaccounts",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nirsancho/cordova-device-accounts/"
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "author": "nirsancho",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nirsancho/cordova-device-accounts/issues"
+  },
+  "homepage": "https://github.com/nirsancho/cordova-device-accounts#readme",
+  "description": "forked from loicknuchel/cordova-device-accounts"
+}

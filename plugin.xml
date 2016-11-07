@@ -1,32 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-        xmlns:rim="http://www.blackberry.com/ns/widgets"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        id="org.loicknuchel.cordova.deviceaccounts"
-        version="0.0.1">
-    <name>Device Accounts</name>
-    <description>Cordova Device Accounts Plugin</description>
-    <license>Apache 2.0</license>
-    <keywords>cordova,device,account,email</keywords>
-    <repo>https://github.com/loicknuchel/cordova-device-accounts.git</repo>
-    <issue>https://github.com/loicknuchel/cordova-device-accounts/issues</issue>
-
-    <js-module src="www/DeviceAccounts.js" name="DeviceAccounts">
-        <clobbers target="plugins.DeviceAccounts" />
+<?xml version='1.0' encoding='utf-8' ?>
+<plugin id="org.nirsancho.cordova.deviceaccounts" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>DeviceAccounts</name>
+    <js-module name="DeviceAccounts" src="www/DeviceAccounts.js">
+        <clobbers target="cordova.plugins.DeviceAccounts" />
     </js-module>
-
-    <!-- android -->
     <platform name="android">
-        <config-file target="res/xml/config.xml" parent="/*">
-            <feature name="DeviceAccounts" >
-                <param name="android-package" value="org.loicknuchel.cordova.deviceaccounts.DeviceAccounts"/>
+        <config-file parent="/*" target="res/xml/config.xml">
+            <feature name="DeviceAccounts">
+                <param name="android-package" value="org.nirsancho.cordova.deviceaccounts.DeviceAccounts" />
             </feature>
         </config-file>
-
-        <source-file src="src/android/DeviceAccounts.java" target-dir="src/org/loicknuchel/cordova/deviceaccounts" />
-
-        <config-file target="AndroidManifest.xml" parent="/manifest">
-            <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+        <config-file parent="/*" target="AndroidManifest.xml">
+            <uses-permission android:name="android.permission.GET_ACCOUNTS" />
         </config-file>
+        <source-file src="src/android/DeviceAccounts.java" target-dir="src/org/nirsancho/cordova/deviceaccounts/DeviceAccounts" />
     </platform>
 </plugin>
