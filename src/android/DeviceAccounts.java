@@ -8,8 +8,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.Manifest;
 import android.accounts.AccountManager;
 import android.accounts.Account;
+import android.content.pm.PackageManager;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -19,6 +22,15 @@ import java.util.ArrayList;
  * http://developer.android.com/reference/android/accounts/Account.html
  */
 public class DeviceAccounts extends CordovaPlugin {
+
+  private static final String GET_ACCOUNTS = Manifest.permission.GET_ACCOUNTS;
+
+  private static final int GET_DEVICE_ACCOUNTS = 1;
+  private static final int GET_DEVICE_ACCOUNTS_BY_TYPE = 2;
+
+  private JSONArray args;
+  private CallbackContext callbackContext;
+
   /**
      * Sets the context of the Command. This can then be used to do things like
      * get file paths associated with the Activity.
@@ -39,21 +51,62 @@ public class DeviceAccounts extends CordovaPlugin {
      * @return                  True if the action was valid, false if not.
      */
   public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
+    this.args = args;
+    this.callbackContext = callbackContext;
+
     if("getDeviceAccounts".equals(action)){
-      List<Account> accounts = getAccounts(null);
-      JSONArray result = formatResult(accounts);
-      callbackContext.success(result);
+      if(cordova.hasPermission(GET_ACCOUNTS)){
+        getDeviceAccounts(args, callbackContext);
+      } else {
+        cordova.requestPermission(this, GET_DEVICE_ACCOUNTS, GET_ACCOUNTS);
+      }
       return true;
     } else if("getDeviceAccountsByType".equals(action)){
-      final String type = args.getString(0);
-      List<Account> accounts = getAccounts(type);
-      JSONArray result = formatResult(accounts);
-      callbackContext.success(result);
+      if(cordova.hasPermission(GET_ACCOUNTS)){
+        getDeviceAccountsByType(args, callbackContext);
+      } else {
+        cordova.requestPermission(this, GET_DEVICE_ACCOUNTS_BY_TYPE, GET_ACCOUNTS);
+      }
       return true;
     } else {
       callbackContext.error("DeviceAccounts." + action + " is not a supported function. Avaiable functions are getDeviceAccounts() and getDeviceAccountsByType(String type) !");
       return false;
     }
+  }
+
+  @Override
+  public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults) throws JSONException {
+    for (int r : grantResults) {
+      if (r == PackageManager.PERMISSION_DENIED) {
+        this.callbackContext.error("GET_ACCOUNTS permission denied");
+        return;
+      }
+    }
+
+    switch(requestCode) {
+      case GET_DEVICE_ACCOUNTS:
+        getDeviceAccounts(this.args, this.callbackContext);
+        break;
+      case GET_DEVICE_ACCOUNTS_BY_TYPE:
+        getDeviceAccountsByType(this.args, this.callbackContext);
+        break;
+    }
+  }
+
+  //--------------------------------------------------------------------------
+  // PROXY METHODS
+  //--------------------------------------------------------------------------
+  private void getDeviceAccounts(JSONArray args, CallbackContext callbackContext) throws JSONException {
+    List<Account> accounts = getAccounts(null);
+    JSONArray result = formatResult(accounts);
+    callbackContext.success(result);
+  }
+
+  private void getDeviceAccountsByType(JSONArray args, CallbackContext callbackContext) throws JSONException {
+    final String type = args.getString(0);
+    List<Account> accounts = getAccounts(type);
+    JSONArray result = formatResult(accounts);
+    callbackContext.success(result);
   }
 
   //--------------------------------------------------------------------------
