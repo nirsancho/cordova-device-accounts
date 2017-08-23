@@ -13,6 +13,6 @@
         <config-file parent="/*" target="AndroidManifest.xml">
             <uses-permission android:name="android.permission.GET_ACCOUNTS" />
         </config-file>
-        <source-file src="src/android/DeviceAccounts.java" target-dir="src/org/nirsancho/cordova/deviceaccounts/DeviceAccounts" />
+        <source-file src="src/android/DeviceAccounts.java" target-dir="src/org/nirsancho/cordova/deviceaccounts" />
     </platform>
 </plugin>
